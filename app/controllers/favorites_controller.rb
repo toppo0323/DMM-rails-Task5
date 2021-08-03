@@ -1,6 +1,6 @@
 class FavoritesController < ApplicationController
   
- before_action :book_params
+ before_action :authenticate_user!
  
  
   def create
@@ -15,8 +15,6 @@ class FavoritesController < ApplicationController
     favorite.destroy
   end
   
-  def book_params
-   @book = Book.find(params[:id])
- end
+  
   
 end
