@@ -23,32 +23,29 @@
              <%= render partial: 'favorites/favorite', locals: {book: @books} %>
              </div>
         </td>
-          
-          
+
+
           <% if @books.user_id == current_user.id %>
           <td><%= link_to 'Edit', edit_book_path(@books), class: "btn btn-sm btn-success edit_book_#{@books.id}" %></td>
           <td><%= link_to 'Destroy', book_path(@books), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger destroy_book_#{@books.id}"%></td>
           <% end %>
         </tr>
       </table>
-      
-      <div class="comments">
-        <p>コメント件数：<%= @books.book_comments.count %></p>
-          <% @books.book_comments.each do |book_comment| %>
-          <%= image_tag('no_image.jpg') %>
-          <%= book_comment.comment %>
-          <% if book_comment.user == current_user %>
-          <%= link_to "Destroy", book_book_comment_path(book_comment.book,book_comment), method: :delete %>
-      
-          <% end %>
-          <% end %>
-      </div>
-      <div class="new-comment">
-          <%= form_with(model:[@books, @book_comment], local: true) do |f| %>
-          <%= f.text_area :comment, rows:'5',placeholder: "コメントをここに" %>
-          <%= f.submit "送信する" %>
-          <% end %>
-      </div>
+
+    <div class="comment">
+      <% if @book_comments.count == 0 %>
+      <p>コメントはまだありません</p>
+      <% else %>
+      <%= render partial: "book_comments/book_comment", locals: { books: @books }%>
+      <% end %>
+    </div>
+
+  <div class="bottomInput">
+    <%= form_with(model: [@books, @book_comment], id: "new-comment") do |f|  %>
+      <%= f.text_field :comment, class: "inputComment" %>
+      <%= f.submit "コメントする", class: "submitComment" %>
+    <% end %>
+  </div>
 
     </div>
   </div>
